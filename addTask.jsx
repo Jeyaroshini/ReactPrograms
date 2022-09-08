@@ -1,10 +1,15 @@
 import React from "react";
-class Event extends React.Component {
+class AddTask extends React.Component {
   constructor() {
     super();
+    this.handleInput = this.handleInput.bind(this)
+    this.addItem = this.addItem.bind(this)
+    this.deleteItem=this.deleteItem.bind(this)
     this.state = {
-      task: " ",
-      list: [],
+      task: '',
+      status:false,
+      submitValue: [],
+      id:Math.random()
     };
   }
   handleInput = (event) => {
@@ -14,24 +19,35 @@ class Event extends React.Component {
   };
   addItem = (event) => {
     if (this.state.task !== "") {
-      const newItem = {
-        id: Math.random(),
-        task: this.state.task,
-      };
-      this.state.list.push(newItem);
-      console.log(newItem);
+        const submitValue=[...this.state.submitValue];
+        submitValue.push(this.state.task)
+        this.setState({status:true, submitValue:submitValue, task:''})
+        console.log(this.state.task,this.state.id)
     }
-
     event.preventDefault();
   };
+  deleteItem = (event) =>
+  {
+    const submitValue = [...this.state.submitValue]
+   const deleteList = submitValue.filter(this.state.task !== this.state.id)
+    this.setState({submitValue:deleteList,task:''})
+    event.preventDefault()
+  }
   render() {
     return (
       <div>
         Enter the task:
         <input value={this.state.task} onChange={this.handleInput}></input>
         <button onClick={this.addItem}>Add Task</button>
+        <div>
+        { this.state.submitValue.map(item=>{ 
+            return (<div> {item}
+            <button onClick={this.deleteItem}>Delete</button>
+                </div>)
+        })}
+        </div>
       </div>
     );
   }
 }
-export default Event;
+export default AddTask;
