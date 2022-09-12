@@ -10,11 +10,15 @@ class Forms extends React.Component {
       name: "",
       empty: [],
       valueList: [],
+      status: false,
+      message: "",
     };
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.registration = this.registration.bind(this);
     this.handleName = this.handleName.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.viewStatus = this.viewStatus.bind(this);
   }
   handleInput = (event) => {
     this.setState({
@@ -42,7 +46,32 @@ class Forms extends React.Component {
         name: "",
         value: "",
         valueList: valueList,
+        id: Math.random(),
       });
+    }
+    console.log("id", this.state.id);
+    event.preventDefault();
+  };
+  deleteItem(key, event) {
+    console.log("id", this.state.id);
+    const empty = [...this.state.empty];
+    const valueList = [...this.state.empty];
+    const emptyList = empty.filter((item) => item.id !== key);
+    const value = valueList.filter((item) => item.id !== key);
+    this.setState({
+      empty: emptyList,
+      valueList: value,
+    });
+    event.preventDefault();
+  }
+  viewStatus = (event) => {
+    if (this.state.empty !== "" && this.state.valueList !== "") {
+      this.setState({ status: true });
+      const message = <strong>Completed :)</strong>;
+      this.setState({ message: message });
+    } else {
+      const message = <strong>Incomplete :(</strong>;
+      this.setState({ message: message });
     }
     event.preventDefault();
   };
@@ -52,9 +81,8 @@ class Forms extends React.Component {
         <h2>Welcome to Online Course Reservation System</h2>
         <form onSubmit={this.handleSubmit}>
           <div>
-            Username:{" "}
+            Username:
             <input type={this.state.name} onChange={this.handleName}></input>
-            <button onClick={this.registration}>Register</button>
             <div></div>
           </div>
           <label>Pick a Course:</label>
@@ -65,6 +93,9 @@ class Forms extends React.Component {
             <option value="JavaScript">JavaScript</option>
           </select>
           <button type="Submit">Submit</button>
+          <div>
+            <button onClick={this.registration}>Register</button>
+          </div>
         </form>
         Course You Picked is: {this.state.submit && this.state.value}
         <div>
@@ -74,20 +105,35 @@ class Forms extends React.Component {
             Duration:
             {this.state.submit && this.state.defaultDuration} hours
             <div>
-              {this.state.empty.map((item) => {
-                return (
-                  <div>
-                    <strong> Welcome: </strong> {item}
-                  </div>
-                );
-              })}
-              {this.state.valueList.map((item) => {
-                return (
-                  <div>
-                    <strong> your course is: </strong> {item}
-                  </div>
-                );
-              })}
+              <table>
+                <th>Username</th>
+                <th>Course</th>
+                <tbody>
+                  <tr>
+                    <td>
+                      {this.state.empty.map((item) => {
+                        return <div>{item}</div>;
+                      })}
+                    </td>
+                    <td>
+                      {this.state.valueList.map((item) => {
+                        return (
+                          <div>
+                            {item}
+                            <button onClick={this.deleteItem(item.id)}>
+                              Delete
+                            </button>
+                            <button onClick={this.viewStatus}>
+                              View Status
+                            </button>
+                            {this.state.status && this.state.message}
+                          </div>
+                        );
+                      })}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
