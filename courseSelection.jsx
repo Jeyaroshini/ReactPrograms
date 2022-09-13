@@ -12,6 +12,7 @@ class Forms extends React.Component {
       valueList: [],
       status: false,
       message: "",
+      nameEdit: "",
     };
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,6 +20,8 @@ class Forms extends React.Component {
     this.handleName = this.handleName.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.viewStatus = this.viewStatus.bind(this);
+    this.setUpdate = this.setUpdate.bind(this);
+    this.handleNameEdit = this.handleNameEdit.bind(this);
   }
   handleInput = (event) => {
     this.setState({
@@ -75,6 +78,20 @@ class Forms extends React.Component {
     }
     event.preventDefault();
   };
+  handleNameEdit = (event) => {
+    this.setState({
+      nameEdit: event.target.value,
+    });
+  };
+  setUpdate = (event) => {
+    this.setState({
+      empty: this.state.nameEdit,
+      submit: true,
+    });
+    console.log("name: ", this.state.empty);
+    event.preventDefault();
+  };
+
   render() {
     return (
       <div>
@@ -120,13 +137,14 @@ class Forms extends React.Component {
                         return (
                           <div>
                             {item}
-                            <button onClick={this.deleteItem(item.id)}>
+                            <button onClick={() => this.deleteItem(item.id)}>
                               Delete
                             </button>
                             <button onClick={this.viewStatus}>
                               View Status
                             </button>
                             {this.state.status && this.state.message}
+                            <Updation />
                           </div>
                         );
                       })}
@@ -142,3 +160,15 @@ class Forms extends React.Component {
   }
 }
 export default Forms;
+function Updation() {
+  return <button onClick={EditItem}>Update</button>;
+}
+function EditItem() {
+  <div>
+    <form>
+      Name :{" "}
+      <input type={this.state.nameEdit} onChange={this.handleNameEdit}></input>
+      <button onClick={this.setUpdate}>Submit</button>
+    </form>
+  </div>;
+}
