@@ -12,7 +12,8 @@ class StudentMarkList extends React.Component {
     };
     this.addSubject = this.addSubject.bind(this);
     this.addMark = this.addMark.bind(this);
-    this.addToList = this.addToList.bind(this);
+    this.addToTable = this.addToTable.bind(this);
+    this.handleTotal = this.handleTotal.bind(this);
   }
   addSubject = (event) => {
     this.setState({
@@ -26,7 +27,7 @@ class StudentMarkList extends React.Component {
     });
     event.preventDefault();
   };
-  addToList = (event) => {
+  addToTable = (event) => {
     if (this.state.subject !== "" && this.state.mark !== "") {
       const subjects = [...this.state.subjects];
       subjects.push(this.state.subject);
@@ -59,7 +60,7 @@ class StudentMarkList extends React.Component {
           Subject:{" "}
           <input type={this.state.subject} onChange={this.addSubject}></input>
           Mark: <input type={this.state.mark} onChange={this.addMark}></input>
-          <button onClick={this.addToList}>Add</button>
+          <button onClick={this.addToTable}>Add</button>
         </form>
         <div>
           <table>
