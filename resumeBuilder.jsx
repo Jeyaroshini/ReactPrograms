@@ -1,5 +1,5 @@
 import React from "react";
-import DatePick from "./weatherReport";
+import DatePick from "./datePick";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
