@@ -1,68 +1,121 @@
-import React from 'react';
-class Calculator extends React.Component
-{
-    constructor()
-    {
-        super()
-        this.state = {num1:"",num2:"",result:"" }
-    }
+calculator.jsx:
 
-    numberOne = (event) =>
-    {
-        this.setState = ({
-            num1:event.target.value
-        })
-        event.prevent.default()
-    }
+import React from "react";
+import Button from "./button";
+class Calculator extends React.Component {
+  constructor() {
+    super();
+    this.state = { input: "", answer: "" };
+    this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick = (event) => {
+    const value = event.target.value;
+    const input = this.state.input + value;
+    switch (value) {
+      case "=": {
+        if (this.state.input !== "") {
+          var answer = eval(this.state.input);
+          this.setState({
+            answer: answer,
+          });
+        } else {
+          this.setState({
+            answer: "Math Error",
+            input: "",
+          });
+        }
+        break;
+      }
+      case "Clear": {
+        this.setState({ input: "", answer: "" });
+        break;
+      }
 
-    numberTwo = (event) =>
-    {
-        this.setState = ({
-            num2:event.target.value
-        })
+      case "Delete": {
+        var str = this.state.input;
+        str = str.substr(0, str.length - 1);
+        this.setState({ input: str });
+        break;
+      }
+      default: {
+        this.setState({ input: input });
+        break;
+      }
     }
-
-    addition = () =>
-    {
-        const Addition = this.state.num1 + this.state.num2
-        alert("The Addition of Two Numbers are: ", Addition)
-    }
-
-    subtraction = () =>
-    {
-        const Subtraction = this.state.num2 - this.state.num2
-        alert("The Subtraction of Two Numbers are: ",Subtraction)
-    }
-
-    multiplication = () =>
-    {
-        const Multiplication = this.state.num1 * this.state.num2
-        alert("The Multiplication of Two Numbers are: ",Multiplication)
-    }
-
-    divsion = () =>
-    {
-        const Division = this.state.num1 / this.state.num2
-        alert("The Division of Two Numbers are: ",Division)
-    }
-    render()
-    {
-        return(
-            <div>
-                <form>
-                    Enter Number: <input value={this.state.num1} onChange={this.numberOne}></input>
-                    Enter Number: <input value={this.state.num2} onChange={this.numberTwo}></input>
-                    <div>
-                    <button onclick={this.addition}>Addition</button>
-                    <button onClick={this.subtraction}>Subtraction</button>
-                    <button onClick={this.multiplication}>Multiplication</button>
-                    <button onClick={this.division}>Division</button>
-                    </div>
-                </form>
-            </div>
-        )
-    }
+    event.preventDefault();
+  };
+  render() {
+    const outlook = {
+      width: "400px",
+      background: "yellow",
+      border: "0px",
+      padding: "10px",
+      textAlign: "right",
+      fontWeight: "bolder",
+      fontSize: "20px",
+    };
+    return (
+      <div>
+        <div>
+          <form>
+            <input value={this.state.input} style={outlook} readOnly></input>
+            <br />
+            <input value={this.state.answer} style={outlook} readOnly></input>
+            <br />
+          </form>
+        </div>
+        <div>
+          <Button label={"1"} handleClick={this.handleClick} />
+          <Button label={"2"} handleClick={this.handleClick} />
+          <Button label={"3"} handleClick={this.handleClick} />
+        </div>
+        <div>
+          <Button label={"4"} handleClick={this.handleClick} />
+          <Button label={"5"} handleClick={this.handleClick} />
+          <Button label={"6"} handleClick={this.handleClick} />
+        </div>
+        <div>
+          <Button label={"7"} handleClick={this.handleClick} />
+          <Button label={"8"} handleClick={this.handleClick} />
+          <Button label={"9"} handleClick={this.handleClick} />
+        </div>
+        <div>
+          <Button label={"+"} handleClick={this.handleClick} />
+          <Button label={"-"} handleClick={this.handleClick} />
+          <Button label={"*"} handleClick={this.handleClick} />
+          <Button label={"="} handleClick={this.handleClick} />
+        </div>
+        <div>
+          <Button label={"Clear"} handleClick={this.handleClick} />
+          <Button label={"Delete"} handleClick={this.handleClick} />
+        </div>
+      </div>
+    );
+  }
 }
-export default Calculator
+export default Calculator;
 
 
+button.jsx:
+
+import React from "react";
+const Button = (props) => {
+  const btn = {
+    width: "100px",
+    border: "2px solid black",
+    backgroundColor: "pink",
+    padding: "10px",
+    color: "black",
+    fontWeight: "bolder",
+    fontSize: "16px",
+  };
+  return (
+    <input
+      type="button"
+      value={props.label}
+      onClick={props.handleClick}
+      style={btn}
+    />
+  );
+};
+export default Button;
